@@ -9,10 +9,10 @@ Installs WinGet, for use with Intune
    Creation Date:  Friday, January 5th 2024, 5:18:37 pm
    File: Install-winget.ps1
    Copyright (c) 2024 Your Company
-   "",
+
 HISTORY:
 2024-01-06	Initial releease
-"",
+
 .INPUTS
 <Inputs if any, otherwise state None>
 .OUTPUTS
@@ -21,12 +21,12 @@ HISTORY:
 .COMPONENT
  Required Modules: 
 
+ .EXAMPLE
+Deploy with Intune. Package into Win32 app.
+
 .LICENSE
 Use this code free of charge at your own risk.
 Never deploy code into production if you do not know what it does.
- 
-.EXAMPLE
-Deploy with Intune. Package into Win32 app.
 
 #>
 
