@@ -9,11 +9,10 @@ Installs WinGet, for use with Intune
    Creation Date:  Friday, January 5th 2024, 5:18:37 pm
    File: Install-winget.ps1
    Copyright (c) 2024 Your Company
+   "",
 HISTORY:
-Date      	          By	Comments
-----------	          ---	----------------------------------------------------------
-2024-01-06-08-27-am	 DB	    Initial release
-
+2024-01-06	Initial releease
+"",
 .INPUTS
 <Inputs if any, otherwise state None>
 .OUTPUTS
