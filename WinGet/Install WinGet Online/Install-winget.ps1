@@ -50,26 +50,18 @@ $Winget = Test-path $TestPath -PathType Leaf
 if (!$Winget){
     LogWrite "WinGet not installed, attempting install with Add-AppxPackage"
     Try {
-        Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe -ErrorAction Stop
-        LogWrite "WinGet successfully installed"
+        LogWrite "Downloading WinGet and its dependencies..."
+        Start-Transcript -Path "$path\$Logfile" -Append
+        Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
+        Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile "$path\Microsoft.VCLibs.x64.14.00.Desktop.appx" -Verbose
+        Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile "$path\Microsoft.UI.Xaml.2.7.x64.appx" -Verbose
+        Add-AppxPackage $path\Microsoft.VCLibs.x64.14.00.Desktop.appx -Verbose
+        Add-AppxPackage $path\Microsoft.UI.Xaml.2.7.x64.appx -Verbose
+        Add-AppxPackage $path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -Verbose
+        Stop-Transcript
     }
     Catch {
-        LogWrite $_
-        LogWrite "Unable to install with Add-AppxPackage"
-        Try {
-            LogWrite "Downloading WinGet and its dependencies..."
-            Start-Transcript -Path "$path\$Logfile" -Append
-            Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
-            Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile "$path\Microsoft.VCLibs.x64.14.00.Desktop.appx" -Verbose
-            Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile "$path\Microsoft.UI.Xaml.2.7.x64.appx" -Verbose
-            Add-AppxPackage $path\Microsoft.VCLibs.x64.14.00.Desktop.appx -Verbose
-            Add-AppxPackage $path\Microsoft.UI.Xaml.2.7.x64.appx -Verbose
-            Add-AppxPackage $path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -Verbose
-            Stop-Transcript
-        }
-        Catch {
-            Write-host "Unable to complete offline installer"
-        }
+        Write-host "Unable to complete offline installer"
     }
 } Else {
     LogWrite "WinGet already installed"
