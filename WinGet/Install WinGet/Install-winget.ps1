@@ -12,7 +12,7 @@ Installs WinGet, for use with Intune
 
 HISTORY:
 2024-01-06	Initial releease
-
+2024-01-06	Update Winget uri to include latest release without .Net (15MB, instead of 200MB)
 .INPUTS
 <Inputs if any, otherwise state None>
 .OUTPUTS
@@ -59,7 +59,7 @@ if (!$Winget){
         Try {
             LogWrite "Downloading WinGet and its dependencies..."
             Start-Transcript -Path "$path\$Logfile" -Append
-            Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
+            Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.5.2201/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile "$path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
             Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile "$path\Microsoft.VCLibs.x64.14.00.Desktop.appx" -Verbose
             Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile "$path\Microsoft.UI.Xaml.2.7.x64.appx" -Verbose
             Add-AppxPackage $path\Microsoft.VCLibs.x64.14.00.Desktop.appx -Verbose
