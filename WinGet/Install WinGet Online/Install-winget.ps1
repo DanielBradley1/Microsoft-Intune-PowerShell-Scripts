@@ -13,6 +13,8 @@ Installs WinGet, for use with Intune
 HISTORY:
 2024-01-06	Initial releease
 2024-01-06	Update Winget uri to include latest release without .Net (15MB, instead of 200MB)
+2024-01-06	Updated to latest version, otherwise AutoPilot preprovisioning fails
+
 .INPUTS
 <Inputs if any, otherwise state None>
 .OUTPUTS
