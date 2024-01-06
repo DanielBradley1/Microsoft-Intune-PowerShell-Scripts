@@ -1,25 +1,35 @@
 <#
 .SYNOPSIS
-Install WinGet
-.DESCRIPTION
-To be deployed via Intune
+Installs WinGet, for use with Intune
+.LINK
+   https://ourcloudnetwork.com
 .NOTES
    Version:        0.1
    Author:         Daniel Bradley
    Creation Date:  Friday, January 5th 2024, 5:18:37 pm
    File: Install-winget.ps1
-   Copyright (c) 2024 ourcloudnetwork.com
+   Copyright (c) 2024 Your Company
+HISTORY:
+Date      	          By	Comments
+----------	          ---	----------------------------------------------------------
+2024-01-06-08-27-am	 DB	    Initial release
 
-.LINK
-   https://ourcloudnetwork.com/
+.INPUTS
+<Inputs if any, otherwise state None>
+.OUTPUTS
+<Outputs if anything is generated>
 
-.CHANGELOG
+.COMPONENT
+ Required Modules: 
 
 .LICENSE
 Use this code free of charge at your own risk.
 Never deploy code into production if you do not know what it does.
+ 
+.EXAMPLE
+Deploy with Intune. Package into Win32 app.
+
 #>
-############################################################################################################
 
 #Create path and define log file
 $path= "C:\ProgramData\WinGet"
