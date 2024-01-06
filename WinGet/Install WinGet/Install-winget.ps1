@@ -27,7 +27,6 @@ Deploy with Intune. Package into Win32 app.
 .LICENSE
 Use this code free of charge at your own risk.
 Never deploy code into production if you do not know what it does.
-
 #>
 
 #Create path and define log file
