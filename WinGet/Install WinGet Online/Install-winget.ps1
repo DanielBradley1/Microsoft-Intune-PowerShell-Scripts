@@ -45,26 +45,24 @@ Function LogWrite
 }
 
 #Check if WinGet is Installed
-$TestPath = "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.21.3482.0_x64__8wekyb3d8bbwe\AppxSignature.p7x"
-$Winget = Test-path $TestPath -PathType Leaf
+$Winget = Get-AppxPackage Microsoft.DesktopAppInstaller
 
 #Install WinGet
-if (!$Winget){
-    LogWrite "WinGet not installed, attempting install with Add-AppxPackage"
+Start-Transcript -Path "$path\$Logfile" -Append
+if ((!$Winget) -or ($winget.version -lt 1.21)){
+    LogWrite "WinGet not installed or outdated, downloading latest files"
     Try {
-        LogWrite "Downloading WinGet and its dependencies..."
-        Start-Transcript -Path "$path\$Logfile" -Append
         Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
         Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile "$path\Microsoft.VCLibs.x64.14.00.Desktop.appx" -Verbose
         Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile "$path\Microsoft.UI.Xaml.2.7.x64.appx" -Verbose
-        Add-AppxPackage $path\Microsoft.VCLibs.x64.14.00.Desktop.appx -Verbose
-        Add-AppxPackage $path\Microsoft.UI.Xaml.2.7.x64.appx -Verbose
-        Add-AppxPackage $path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -Verbose
-        Stop-Transcript
+        Add-AppxProvisionedPackage -online -packagepath $path\Microsoft.VCLibs.x64.14.00.Desktop.appx -SkipLicense -Verbose
+        Add-AppxProvisionedPackage -online -packagepath $path\Microsoft.UI.Xaml.2.7.x64.appx -SkipLicense -Verbose
+        Add-AppxProvisionedPackage -online -packagepath $path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -SkipLicense -Verbose
     }
     Catch {
-        Write-host "Unable to complete offline installer"
+        Write-host "Unable to complete install"
     }
 } Else {
     LogWrite "WinGet already installed"
 }
+Stop-Transcript
