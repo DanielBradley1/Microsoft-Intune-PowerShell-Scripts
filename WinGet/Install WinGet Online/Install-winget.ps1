@@ -17,7 +17,7 @@ HISTORY:
 2024-01-06	Updated to latest version, otherwise AutoPilot preprovisioning fails
 2024-01-08	Added optional commands
 
- .EXAMPLE
+.EXAMPLE
 Deploy as Intune script
 
 .LICENSE
