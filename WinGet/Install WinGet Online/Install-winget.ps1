@@ -45,24 +45,38 @@ Function LogWrite
 }
 
 #Check if WinGet is Installed
-$Winget = Get-AppxPackage Microsoft.DesktopAppInstaller
+$TestPath = "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.21.3482.0_x64__8wekyb3d8bbwe\AppxSignature.p7x"
+$Winget = Test-path $TestPath -PathType Leaf
 
 #Install WinGet
-Start-Transcript -Path "$path\$Logfile" -Append
-if ((!$Winget) -or ($winget.version -lt 1.21)){
-    LogWrite "WinGet not installed or outdated, downloading latest files"
+if (!$Winget){
+    LogWrite "WinGet not installed, attempting install with Add-AppxPackage"
     Try {
+        LogWrite "Downloading WinGet and its dependencies..."
+        Start-Transcript -Path "$path\$Logfile" -Append
         Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -Verbose
         Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile "$path\Microsoft.VCLibs.x64.14.00.Desktop.appx" -Verbose
         Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile "$path\Microsoft.UI.Xaml.2.7.x64.appx" -Verbose
         Add-AppxProvisionedPackage -online -packagepath $path\Microsoft.VCLibs.x64.14.00.Desktop.appx -SkipLicense -Verbose
         Add-AppxProvisionedPackage -online -packagepath $path\Microsoft.UI.Xaml.2.7.x64.appx -SkipLicense -Verbose
         Add-AppxProvisionedPackage -online -packagepath $path\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -SkipLicense -Verbose
+        Stop-Transcript
     }
     Catch {
-        Write-host "Unable to complete install"
+        Write-host "Unable to complete offline installer"
     }
 } Else {
     LogWrite "WinGet already installed"
 }
-Stop-Transcript
+
+<# 
+
+#### Optional deploy additional applications #####
+
+#### Additoinal looping function can be added here for multiple apps ####
+
+cd "C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.21.3482.0_x64__8wekyb3d8bbwe\"
+LogWrite "location set to $((Get-Location).Path)"
+.\Winget install Google.Chrome --accept-package-agreements --accept-source-agreements | Tee-Object "$path\$Logfile" -Append
+
+#>
