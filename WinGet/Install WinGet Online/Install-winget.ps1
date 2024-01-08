@@ -3,12 +3,13 @@
 Installs WinGet, for use with Intune
 .LINK
    https://ourcloudnetwork.com
+   https://www.linkedin.com/in/danielbradley2/
+   https://twitter.com/DanielatOCN
 .NOTES
    Version:        0.1
    Author:         Daniel Bradley
    Creation Date:  Friday, January 5th 2024, 5:18:37 pm
    File: Install-winget.ps1
-   Copyright (c) 2024 Your Company
 
 HISTORY:
 2024-01-06	Initial releease
@@ -16,16 +17,8 @@ HISTORY:
 2024-01-06	Updated to latest version, otherwise AutoPilot preprovisioning fails
 2024-01-08	Added optional commands
 
-.INPUTS
-<Inputs if any, otherwise state None>
-.OUTPUTS
-<Outputs if anything is generated>
-
-.COMPONENT
- Required Modules: 
-
  .EXAMPLE
-Deploy with Intune. Package into Win32 app.
+Deploy as Intune script
 
 .LICENSE
 Use this code free of charge at your own risk.
