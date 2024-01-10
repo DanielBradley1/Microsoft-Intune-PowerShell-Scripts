@@ -9,23 +9,8 @@
    Creation Date:  Monday, January 8th 2024, 11:47:41 am
    File: Install-M365.ps1
    Copyright (c) 2024 Your Company
-
-HISTORY:
-
-.INPUTS
-<Inputs if any, otherwise state None>
 .OUTPUTS
-<Outputs if anything is generated>
-
-.COMPONENT
- Required Modules: 
- 
-.EXAMPLE
-<Example goes here. Repeat this attribute for more than one example>
-
-.LICENSE
-Use this code free of charge at your own risk.
-Never deploy code into production if you do not know what it does.
+Log files to "C:\Windows\Temp\m365"
 #>
 
 #Create path and define log file
