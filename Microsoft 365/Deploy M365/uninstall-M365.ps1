@@ -26,7 +26,7 @@ Function LogWrite
    Add-content "$filepath\$LogFile" -value "$date - $logstring"
 }
 
-#Download latest setup and install
+#Download latest setup and uninstall
 try {
     LogWrite "Downloading latest setup file.."
     Start-Transcript -Path "$path\$Logfile" -Append
@@ -34,8 +34,8 @@ try {
     Stop-Transcript
     try {
         $setup = "$filepath\setup\" + "setup.exe"
-        Start-Process $setup -ArgumentList "/configure $($psscriptroot)\configuration.xml" -Wait -PassThru -ErrorAction Stop | Tee-Object "$filepath\$Logfile" -Append
-        LogWrite "Microsoft 365 apps successfully installed"
+        Start-Process $setup -ArgumentList "/configure $($psscriptroot)\uninstall.xml" -Wait -PassThru -ErrorAction Stop | Tee-Object "$filepath\$Logfile" -Append
+        LogWrite "Microsoft 365 apps successfully removed"
         }
         catch {
             LogWrite $_
@@ -45,14 +45,3 @@ catch {
     LogWrite "Failed to download office setup.exe. See next line for error..."
     LogWrite $_
 }
-
-<#Clean up - Leave setup fail available for uninstall
-If (Test-path -Path "$filepath\setup"){
-    try {
-        Remove-item -path "$filepath\setup" -Recurse
-    }
-    catch {
-        LogWrite $_
-    }
-}
-#>
