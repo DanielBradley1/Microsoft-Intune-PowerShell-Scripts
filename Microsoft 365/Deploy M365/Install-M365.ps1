@@ -43,11 +43,15 @@ Function LogWrite
 
 #Download latest setup and install
 try {
+    LogWrite "Downloading latest setup file.."
+    Start-Transcript -Path "$path\$Logfile" -Append
     Invoke-WebRequest -uri "https://officecdn.microsoft.com/pr/wsus/setup.exe" -OutFile "$filepath\setup\setup.exe" -Verbose
+    Stop-Transcript
     try {
         $setup = "$filepath\setup\" + "setup.exe"
         $configuration = $psscriptroot + "\configuration.xml"
-        $OfficeInstall = Start-Process $setup -ArgumentList "/configure $($psscriptroot)\configuration.xml" -Wait -PassThru -ErrorAction Stop
+        Start-Process $setup -ArgumentList "/configure $($psscriptroot)\configuration.xml" -Wait -PassThru -ErrorAction Stop | Tee-Object "$filepath\$Logfile" -Append
+        LogWrite "Microsoft 365 apps successfully installed"
         }
         catch {
             LogWrite $_
@@ -67,5 +71,4 @@ If (Test-path -Path "$filepath\setup"){
         LogWrite $_
     }
 }
-LogWrite "Microsoft 365 apps successfully installed"
 #>
