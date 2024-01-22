@@ -38,7 +38,6 @@ $MgMod = Get-Module -ListAvailable -Name Microsoft.Graph.Authentication
 If (!$MgMod){
     Write-host "Microsoft.Graph.Authentication module is not installed. Installing now..."
     try {
-        $ProgressPreference = "SilentlyContinue"
         Install-Module Microsoft.Graph.Authentication -Scope CurrentUser -Force -ErrorAction stop
         Import-Module Microsoft.Graph.Authentication
         Write-host "Microsoft.Graph.Authentication module installed" -ForegroundColor Green
