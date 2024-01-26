@@ -1,0 +1,46 @@
+function getloggedindetails() {
+    ##Find logged in username
+    $user = Get-WmiObject Win32_Process -Filter "Name='explorer.exe'" | ForEach-Object { $_.GetOwner() } | Select-Object -Unique -Expand User
+    
+    ##Find logged in user's SID
+    ##Loop through registry profilelist until ProfileImagePath matches and return the path
+        $path= "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*"
+        $sid = (Get-ItemProperty -Path $path | Where-Object { $_.ProfileImagePath -like "*$user" }).PSChildName
+    $return = $sid, $user
+    return $return
+}
+
+$username = $loggedinuser[1]
+$File = "C:\users\$username\AppData\Local\Microsoft\Teams\update.exe"
+if (Test-Path $File) {
+    write-output "Teams Update detected, exiting"
+    exit 0
+}
+else {
+    exit 1
+}
+
+OR
+
+$loggedinuser = getloggedindetails
+##Set key
+
+$sid = $loggedinuser[0]
+$Path = "Registry::HKU\$sid\SOFTWARE\7-Zip"
+$Name = "Path"
+$Type = "STRING"
+$Value = "C:\Program Files\7-Zip\"
+
+Try {
+    $Registry = Get-ItemProperty -Path $Path -Name $Name -ErrorAction Stop | Select-Object -ExpandProperty $Name
+    If ($Registry -eq $Value){
+        Write-Output "Detected"
+       Exit 0
+    } 
+    Exit 1
+} 
+Catch {
+    Exit 1
+        write-host "not detected"
+    write-host $path
+}
