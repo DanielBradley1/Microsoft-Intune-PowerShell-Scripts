@@ -1,19 +1,19 @@
 ./Device/Vendor/MSFT/LAPS/Policies/AutomaticAccountManagementEnableAccount
-Bool
-True
+- Bool
+- True
 
 ./Device/Vendor/MSFT/LAPS/Policies/AutomaticAccountManagementEnabled
-Bool
-True
+- Bool
+- True
 
 ./Device/Vendor/MSFT/LAPS/Policies/AutomaticAccountManagementNameOrPrefix
-String
-prefix-
+- String
+- prefix-
 
 ./Device/Vendor/MSFT/LAPS/Policies/AutomaticAccountManagementRandomizeName
-Bool
-True
+- Bool
+- True
 
 ./Device/Vendor/MSFT/LAPS/Policies/AutomaticAccountManagementTarget
-Bool
-True
+- Bool
+- True
