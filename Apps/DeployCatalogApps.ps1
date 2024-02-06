@@ -18,8 +18,8 @@ Function DeployCatalogApps {
     Foreach ($CatalogApp in $Apps) {
 
         #Get the latest version of the catalog app
-        $Uri = "https://graph.microsoft.com/beta/deviceAppManagement/mobileAppCatalogPackages?`$filter=productName eq '$CatalogApp'"
-        $RetrievedApp = getallpagination -url $uri
+        $GetUri = "https://graph.microsoft.com/beta/deviceAppManagement/mobileAppCatalogPackages?`$filter=productName eq '$CatalogApp'"
+        $RetrievedApp = Invoke-MgGraphRequest -Method GET -Uri $GetUri -OutputType PSObject | Select -ExpandProperty Value
         $SelectedApp = $RetrievedApp[0]
     
         Write-Host "Attempting to deploy catalog app: $($SelectedApp.productName) v:$($SelectedApp.versionName)"
@@ -27,13 +27,14 @@ Function DeployCatalogApps {
 
         #Convert the app to catalog package
         $ConUri = "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps/convertMobileAppCatalogPackageToMobileApp(versionId='$($SelectedApp.id)')"
-        $MobApp = (Invoke-MgGraphRequest -uri $ConUri -Method GET -OutputType PSObject) | Select-Object * -ExcludeProperty "@odata.context", id, largeIcon, createdDateTime, lastModifiedDateTime, owner, notes, size
+        $MobApp = (Invoke-MgGraphRequest -uri $ConUri -Method GET -OutputType PSObject) | Select-Object * -ExcludeProperty "@odata.context", id, largeIcon, createdDateTime, lastModifiedDateTime, owner, notes, size, minimumSupportedOperatingSystem, minimumFreeDiskSpaceInMB, minimumMemoryInMB, minimumNumberOfProcessors, minimumCpuSpeedInMHz 
         $AppPayload = $MobApp | ConvertTo-Json
 
         Write-Host "Deploying catalog app: $($SelectedApp.productName) v:$($SelectedApp.versionName)"
 
         #Deploy the catalog app
-        Invoke-MgGraphRequest -Method POST -Uri $posturi -Body $AppPayload -ContentType "application/json"
+        $DeployUri = "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps"
+        Invoke-MgGraphRequest -Method POST -Uri $DeployUri -Body $AppPayload -ContentType "application/json"
         
     }
 }
