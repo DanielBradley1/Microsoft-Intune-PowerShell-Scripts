@@ -16,6 +16,7 @@ Function DeployCatalogApps {
     )
 
     Foreach ($CatalogApp in $Apps) {
+
         #Get the latest version of the catalog app
         $Uri = "https://graph.microsoft.com/beta/deviceAppManagement/mobileAppCatalogPackages?`$filter=productName eq '$CatalogApp'"
         $RetrievedApp = getallpagination -url $uri
@@ -23,13 +24,16 @@ Function DeployCatalogApps {
     
         Write-Host "Attempting to deploy catalog app: $($SelectedApp.productName) v:$($SelectedApp.versionName)"
         write-host "Converting to mobile app"
+
         #Convert the app to catalog package
         $ConUri = "https://graph.microsoft.com/beta/deviceAppManagement/mobileApps/convertMobileAppCatalogPackageToMobileApp(versionId='$($SelectedApp.id)')"
         $MobApp = (Invoke-MgGraphRequest -uri $ConUri -Method GET -OutputType PSObject) | Select-Object * -ExcludeProperty "@odata.context", id, largeIcon, createdDateTime, lastModifiedDateTime, owner, notes, size
         $AppPayload = $MobApp | ConvertTo-Json
 
         Write-Host "Deploying catalog app: $($SelectedApp.productName) v:$($SelectedApp.versionName)"
+
         #Deploy the catalog app
         Invoke-MgGraphRequest -Method POST -Uri $posturi -Body $AppPayload -ContentType "application/json"
+        
     }
 }
