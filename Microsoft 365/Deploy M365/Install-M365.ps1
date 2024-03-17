@@ -29,7 +29,7 @@ Function LogWrite
 #Download latest setup and install
 try {
     LogWrite "Downloading latest setup file.."
-    Start-Transcript -Path "$path\$Logfile" -Append
+    Start-Transcript -Path "$filepath\$Logfile" -Append
     Invoke-WebRequest -uri "https://officecdn.microsoft.com/pr/wsus/setup.exe" -OutFile "$filepath\setup\setup.exe" -Verbose
     Stop-Transcript
     try {
